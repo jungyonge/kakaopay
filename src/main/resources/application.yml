@@ -1,0 +1,20 @@
+
+server:
+  port: 3000
+
+spring:
+  mvc:
+    throw-exception-if-no-handler-found: true
+  jpa:
+    hibernate:
+      ddl-auto: create
+    database: mysql
+    show-sql: true
+    properties:
+      hibernate:
+        default_schema: kakaopay
+  datasource:
+    url: jdbc:mysql://localhost:3306/kakaopay?serverTimezone=UTC&autoReconnection=true
+    username: root
+    password: ghzkrp153
+    driver-class-name: com.mysql.cj.jdbc.Driver
