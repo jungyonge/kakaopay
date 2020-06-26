@@ -1,5 +1,6 @@
 package com.jungyonge.kakaopay.util;
 
+import java.util.Date;
 import java.util.Random;
 
 public class RandomTokenUtil {
@@ -7,6 +8,7 @@ public class RandomTokenUtil {
     public static String getRandomToken(int length){
         StringBuffer tempRandomToken = new StringBuffer();
         Random rnd = new Random();
+        rnd.setSeed((new Date().getTime()));
         for (int i = 0; i < length; i++) {
             int rIndex = rnd.nextInt(3);
             switch (rIndex) {

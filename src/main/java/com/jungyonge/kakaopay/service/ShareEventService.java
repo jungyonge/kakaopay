@@ -1,9 +1,7 @@
 package com.jungyonge.kakaopay.service;
 
-import com.fasterxml.jackson.annotation.JsonView;
 import com.jungyonge.kakaopay.exception.ShareEventException;
 import com.jungyonge.kakaopay.model.*;
-import com.jungyonge.kakaopay.payload.jsonHint.JsonHint;
 import com.jungyonge.kakaopay.repository.RoomRepository;
 import com.jungyonge.kakaopay.repository.ShareEventDetailRepository;
 import com.jungyonge.kakaopay.repository.ShareEventRepository;
@@ -74,6 +72,7 @@ public class ShareEventService {
     public int attendShareEvent(int xUserId, int xRoomId, String token) throws ShareEventException {
         int shareMoney = 0;
         Random random = new Random();
+        random.setSeed(new Date().getTime());
         ShareEventDetail shareEventDetail;
         ShareEvent shareEvent = new ShareEvent();
         Room room = new Room();
@@ -116,10 +115,25 @@ public class ShareEventService {
     public ShareEventDto searchShareEvent (int xUserId, int xRoomId, String token) throws ShareEventException{
 
         List<ShareEventDetailDto> shareEventDetailDtos = new ArrayList<>();
+        int completeShareMoney = 0 ;
+
         User hostUser = userRepository.findById(xUserId);
         Room room = roomRepository.findById(xRoomId);
-        int completeShareMoney = 0 ;
         ShareEvent shareEvent = shareEventRepository.findByRoomAndTokenAndUser(room,token,hostUser);
+
+        if(shareEvent == null){
+            log.error(ShareEventException.ResponseCode.E0009.getValue());
+            throw new ShareEventException(ShareEventException.ResponseCode.E0009);
+        }
+
+        long currentTime = new Date().getTime();
+        long regTime = shareEvent.getRegDate().getTime();
+        long diffTime = (currentTime - regTime) /  (24 * 60 * 60 * 1000);
+
+        if(diffTime > 7){
+            log.error(ShareEventException.ResponseCode.E0008.getValue());
+            throw new ShareEventException(ShareEventException.ResponseCode.E0008);
+        }
 
         List<ShareEventDetail> shareEventDetails = shareEvent.getShareEventDetails();
 
@@ -144,6 +158,7 @@ public class ShareEventService {
         int min = 1;
         int max = totalShareMoney;
         Random random = new Random();
+        random.setSeed(new Date().getTime());
 
         for (int i = 0; i < totalSharePeople; i++) {
             ShareEventDetail shareEventDetail = new ShareEventDetail();
