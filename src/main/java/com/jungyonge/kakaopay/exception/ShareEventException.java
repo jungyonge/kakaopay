@@ -38,7 +38,7 @@ public class ShareEventException extends RuntimeException{
         E0004("뿌리기가 존재하지 않습니다"),
         E0005("계정 정보가 존재하지 않습니다."),
         E0006("채팅방에 속한 유저만 이벤트에 참여 가능합니다. "),
-        E0311("잔액이 부족합니다"),
+        E0007("참여하신 채팅방이 아닙니다."),
         E0312("결제금액 계산 시 오류가 발생했습니다"),
         E0313("보너스 스타가 부족합니다")       ;
         private String value;

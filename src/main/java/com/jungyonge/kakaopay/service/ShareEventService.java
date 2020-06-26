@@ -45,7 +45,10 @@ public class ShareEventService {
         String token = RandomTokenUtil.getRandomToken(3);
 
         User hostUser = userRepository.findById(xUserId);
-        Room room = roomRepository.findTopByNum(xRoomId);
+        Room room = roomRepository.findByIdAndUser(xRoomId, hostUser);
+        if(room == null){
+            throw new ShareEventException(ShareEventException.ResultErrorCode.E0007);
+        }
         hostTotalMoney = hostUser.getMoney() - totalShareMoney;
         hostUser.setMoney(hostTotalMoney);
         userRepository.save(hostUser);
@@ -76,11 +79,21 @@ public class ShareEventService {
         int shareMoney = 0;
         Random random = new Random();
         ShareEventDetail shareEventDetail;
+        ShareEvent shareEvent = new ShareEvent();
+        Room room = new Room();
 
+        List<Room> rooms = roomRepository.findByNum(roomRepository.findById(xRoomId).getNum());
         User receiveUser = userRepository.findById(xUserId);
-        Room room = roomRepository.findByNumAndUser(xRoomId,receiveUser);
-        ShareEvent shareEvent = shareEventRepository.findByRoomAndToken(room,token);
+
+        for(Room tempRoom: rooms){
+            shareEvent = shareEventRepository.findByRoomAndToken(tempRoom,token);
+            if(shareEvent != null){
+                break;
+            }
+        }
+
         validateShareEvent(shareEvent, receiveUser, room);
+
 
         //해당 돈뿌리기 Detail중 랜덤으로 1개 뽑기
         List<ShareEventDetail> shareEventDetails = shareEventDetailRepository.findByShareEventIdAndUserIsNull(shareEvent.getId());

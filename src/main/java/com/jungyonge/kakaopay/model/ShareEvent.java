@@ -24,9 +24,7 @@ public class ShareEvent implements Serializable {
     private User user;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(
-            name = "room_num",
-            referencedColumnName = "room_num" )
+    @JoinColumn(name = "room_id")
     private Room room;
 
     private String token;

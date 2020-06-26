@@ -29,7 +29,7 @@ class ShareEventControllerTest {
     @Test
     void addShareEvent() {
         int xUserId = 3;
-        int xRoomId = 1;
+        int xRoomId = 5;
         int totalShareMoney = 100;
         int totalSharePeople = 3;
 
@@ -40,9 +40,9 @@ class ShareEventControllerTest {
 
     @Test
     void attendShareEvent() throws Exception {
-        int xUserId = 3;
-        int xRoomId = 1;
-        String token = "R2E";
+        int xUserId = 1;
+        int xRoomId = 3;
+        String token = "6an";
 
         ResponseEntity responseEntity = shareEventController.attendShareEvent(xUserId,xRoomId,token);
         log.info(responseEntity.toString());
