@@ -1,8 +1,12 @@
 package com.jungyonge.kakaopay.model;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.web.bind.annotation.GetMapping;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -10,7 +14,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-@Data
+@Getter
+@Setter
+@EqualsAndHashCode(callSuper = false, exclude = {"rooms"})
 @Entity
 public class User implements Serializable {
 

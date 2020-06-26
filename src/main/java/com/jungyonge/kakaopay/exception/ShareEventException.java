@@ -1,15 +1,14 @@
 package com.jungyonge.kakaopay.exception;
 
-import com.jungyonge.kakaopay.codemap.CodeModel;
 import lombok.Getter;
 
 public class ShareEventException extends RuntimeException{
 
     @Getter
-    private String errorCode;
+    private String responseCode;
 
     @Getter
-    private String errorMsg;
+    private String responseMsg;
 
     public ShareEventException(String message) {
         super(message);
@@ -23,15 +22,16 @@ public class ShareEventException extends RuntimeException{
         super(throwable);
     }
 
-    public ShareEventException(ResultErrorCode errorCode) {
+    public ShareEventException(ResponseCode responseCode) {
         //super(MessageSourceUtil.getMessage(errorCode.toString()));
-        super(errorCode.getValue());
-        this.errorMsg = errorCode.getValue();
-        this.errorCode = errorCode.toString();
+        super(responseCode.getValue());
+        this.responseMsg = responseCode.getValue();
+        this.responseCode = responseCode.toString();
     }
 
-    public enum ResultErrorCode implements CodeModel {
+    public enum ResponseCode {
 
+        C0000("정상"),
         E0001("이미 참여한 계정입니다."),
         E0002("해당 뿌리기를 만드신 계정은 참여 불가능 합니다."),
         E0003("만료된 뿌리기 입니다."),
@@ -43,19 +43,12 @@ public class ShareEventException extends RuntimeException{
         E0313("보너스 스타가 부족합니다")       ;
         private String value;
 
-        ResultErrorCode(String value) {
+        ResponseCode(String value) {
             this.value = value;
         }
-        @Override
-        public String getKey() {
-            return name().replace("C", "");
-        }
-        @Override
         public String getValue() {
             return value;
         }
-
-        @Override
         public String toString() {
             return super.name().replace("C", "");
         }

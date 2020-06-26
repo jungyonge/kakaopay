@@ -1,7 +1,11 @@
 package com.jungyonge.kakaopay.model;
 
+import com.fasterxml.jackson.annotation.JsonView;
+import com.jungyonge.kakaopay.payload.jsonHint.JsonHint;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.experimental.Tolerate;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -46,6 +50,10 @@ public class ShareEvent implements Serializable {
     @UpdateTimestamp
     @Temporal(TemporalType.TIMESTAMP)
     private Date udtDate;
+
+
+    @Transient
+    private int completeShareMoney;
 
     @Builder
     public ShareEvent(long id ,User user, Room room, String token, int totalShareMoney , int totalSharePeople, boolean expired, Date regDate, Date udtDate){

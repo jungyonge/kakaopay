@@ -2,6 +2,7 @@ package com.jungyonge.kakaopay.payload;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonView;
+import com.jungyonge.kakaopay.exception.ShareEventException;
 import com.jungyonge.kakaopay.payload.jsonHint.JsonHint;
 import lombok.Data;
 import org.springframework.http.HttpStatus;
@@ -10,16 +11,12 @@ import org.springframework.http.HttpStatus;
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class ApiResponse {
 
-    @JsonView({JsonHint.ShareEventView.class})
     private int status;
 
-    @JsonView({JsonHint.ShareEventView.class})
-    private String errorMsg;
+    private String responseMsg;
 
-    @JsonView({JsonHint.ShareEventView.class})
-    private String errorCode;
+    private String responseCode;
 
-    @JsonView({JsonHint.ShareEventView.class})
     private Object data;
 
     public ApiResponse() {
@@ -28,20 +25,20 @@ public class ApiResponse {
 
     public ApiResponse(HttpStatus status) {
         this.status = status.value();
-        this.errorMsg = status.getReasonPhrase();
-        this.errorCode = "0000";
+        this.responseMsg = status.getReasonPhrase();
+        this.responseCode = "C0000";
     }
 
-    public ApiResponse(HttpStatus status, String errorCode) {
+    public ApiResponse(HttpStatus status, String responseCode) {
         this.status = status.value();
-        this.errorMsg = status.getReasonPhrase();
-        this.errorCode = errorCode;
+        this.responseMsg = status.getReasonPhrase();
+        this.responseCode = responseCode;
     }
 
-    public ApiResponse(HttpStatus status, String errorCode, String errorMsg) {
+    public ApiResponse(HttpStatus status, String responseCode, String responseMsg) {
         this.status = status.value();
-        this.errorMsg = errorMsg;
-        this.errorCode = errorCode;
+        this.responseMsg = responseMsg;
+        this.responseCode = responseCode;
     }
 
 }

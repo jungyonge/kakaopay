@@ -15,5 +15,8 @@ public interface ShareEventRepository extends JpaRepository<ShareEvent, Long> {
 
     ShareEvent findByRoomAndToken(Room room, String token);
 
+    ShareEvent findByRoomAndTokenAndUser(Room room, String token, User user);
+
+
 
 }

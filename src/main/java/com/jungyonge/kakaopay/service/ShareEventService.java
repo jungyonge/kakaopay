@@ -1,22 +1,17 @@
 package com.jungyonge.kakaopay.service;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import com.jungyonge.kakaopay.exception.ShareEventException;
-import com.jungyonge.kakaopay.model.Room;
-import com.jungyonge.kakaopay.model.ShareEvent;
-import com.jungyonge.kakaopay.model.ShareEventDetail;
-import com.jungyonge.kakaopay.model.User;
-import com.jungyonge.kakaopay.payload.ApiResponse;
+import com.jungyonge.kakaopay.model.*;
+import com.jungyonge.kakaopay.payload.jsonHint.JsonHint;
 import com.jungyonge.kakaopay.repository.RoomRepository;
 import com.jungyonge.kakaopay.repository.ShareEventDetailRepository;
 import com.jungyonge.kakaopay.repository.ShareEventRepository;
 import com.jungyonge.kakaopay.repository.UserRepository;
 import com.jungyonge.kakaopay.util.RandomTokenUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Slf4j
@@ -47,7 +42,8 @@ public class ShareEventService {
         User hostUser = userRepository.findById(xUserId);
         Room room = roomRepository.findByIdAndUser(xRoomId, hostUser);
         if(room == null){
-            throw new ShareEventException(ShareEventException.ResultErrorCode.E0007);
+            log.error(ShareEventException.ResponseCode.E0007.getValue());
+            throw new ShareEventException(ShareEventException.ResponseCode.E0007);
         }
         hostTotalMoney = hostUser.getMoney() - totalShareMoney;
         hostUser.setMoney(hostTotalMoney);
@@ -91,9 +87,7 @@ public class ShareEventService {
                 break;
             }
         }
-
         validateShareEvent(shareEvent, receiveUser, room);
-
 
         //해당 돈뿌리기 Detail중 랜덤으로 1개 뽑기
         List<ShareEventDetail> shareEventDetails = shareEventDetailRepository.findByShareEventIdAndUserIsNull(shareEvent.getId());
@@ -119,7 +113,30 @@ public class ShareEventService {
         return shareMoney;
     }
 
+    public ShareEventDto searchShareEvent (int xUserId, int xRoomId, String token) throws ShareEventException{
 
+        List<ShareEventDetailDto> shareEventDetailDtos = new ArrayList<>();
+        User hostUser = userRepository.findById(xUserId);
+        Room room = roomRepository.findById(xRoomId);
+        int completeShareMoney = 0 ;
+        ShareEvent shareEvent = shareEventRepository.findByRoomAndTokenAndUser(room,token,hostUser);
+
+        List<ShareEventDetail> shareEventDetails = shareEvent.getShareEventDetails();
+
+        Iterator iter = shareEventDetails.iterator();
+        while(iter.hasNext()) {
+            ShareEventDetail shareEventDetail = (ShareEventDetail) iter.next();
+            if(shareEventDetail.getUser() == null){
+                iter.remove();
+            }else {
+                ShareEventDetailDto shareEventDetailDto = new ShareEventDetailDto(shareEventDetail.getShareMoneyDetail(),shareEventDetail.getUser().getId());
+                completeShareMoney += shareEventDetail.getShareMoneyDetail();
+                shareEventDetailDtos.add(shareEventDetailDto);
+            }
+        }
+
+        return new ShareEventDto(shareEvent.getRegDate(),shareEvent.getTotalShareMoney(),completeShareMoney,shareEventDetailDtos);
+    }
     private List<ShareEventDetail> divideMoney(int totalShareMoney, int totalSharePeople) {
 
         List<ShareEventDetail> shareEventDetails = new ArrayList<>();
@@ -149,18 +166,18 @@ public class ShareEventService {
         long checkAttend = 0;
 
         if(room == null){
-            log.error(ShareEventException.ResultErrorCode.E0006.getValue());
-            throw new ShareEventException(ShareEventException.ResultErrorCode.E0006);
+            log.error(ShareEventException.ResponseCode.E0006.getValue());
+            throw new ShareEventException(ShareEventException.ResponseCode.E0006);
         }
 
         if(shareEvent == null){
-            log.error(ShareEventException.ResultErrorCode.E0004.getValue());
-            throw new ShareEventException(ShareEventException.ResultErrorCode.E0004);
+            log.error(ShareEventException.ResponseCode.E0004.getValue());
+            throw new ShareEventException(ShareEventException.ResponseCode.E0004);
         }
 
         if(user == null){
-            log.error(ShareEventException.ResultErrorCode.E0005.getValue());
-            throw new ShareEventException(ShareEventException.ResultErrorCode.E0005);
+            log.error(ShareEventException.ResponseCode.E0005.getValue());
+            throw new ShareEventException(ShareEventException.ResponseCode.E0005);
         }
 
         long currentTime = new Date().getTime();
@@ -168,19 +185,19 @@ public class ShareEventService {
 
         long diffTime = (currentTime - regTime) /  1000;
         if (shareEvent.isExpired() || diffTime > 600) {
-            log.error(ShareEventException.ResultErrorCode.E0003.getValue());
-            throw new ShareEventException(ShareEventException.ResultErrorCode.E0003);
+            log.error(ShareEventException.ResponseCode.E0003.getValue());
+            throw new ShareEventException(ShareEventException.ResponseCode.E0003);
         }
         if (user.getId() == shareEvent.getUser().getId()) {
-            log.error(ShareEventException.ResultErrorCode.E0002.getValue());
-            throw new ShareEventException(ShareEventException.ResultErrorCode.E0002);
+            log.error(ShareEventException.ResponseCode.E0002.getValue());
+            throw new ShareEventException(ShareEventException.ResponseCode.E0002);
         }
 
         checkAttend = shareEventDetailRepository.countByShareEventIdAndUserIs(shareEvent.getId(), user);
 
         if (checkAttend > 0) {
-            log.error(ShareEventException.ResultErrorCode.E0001.getValue());
-            throw new ShareEventException(ShareEventException.ResultErrorCode.E0001);
+            log.error(ShareEventException.ResponseCode.E0001.getValue());
+            throw new ShareEventException(ShareEventException.ResponseCode.E0001);
         }
     }
 

@@ -1,6 +1,6 @@
 
 server:
-  port: 3000
+  port: 8080
 
 spring:
   mvc:
@@ -18,3 +18,6 @@ spring:
     username: root
     password: ghzkrp153
     driver-class-name: com.mysql.cj.jdbc.Driver
+  jackson:
+    mapper:
+      DEFAULT_VIEW_INCLUSION: false
