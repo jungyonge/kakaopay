@@ -1,8 +1,6 @@
 package com.jungyonge.kakaopay.controller;
 
-import com.fasterxml.jackson.annotation.JsonView;
 import com.jungyonge.kakaopay.exception.ShareEventException;
-import com.jungyonge.kakaopay.payload.jsonHint.JsonHint;
 import com.jungyonge.kakaopay.service.ShareEventService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,21 +19,6 @@ public class ShareEventController extends ResponseAbstractController {
     public ShareEventController(ShareEventService shareEventService) {
         this.shareEventService = shareEventService;
     }
-
-    @GetMapping("/test")
-    public ResponseEntity hello() {
-        return makeResponse();
-    }
-
-    @GetMapping("/data")
-    public ResponseEntity data() {
-        return makeResponse(new HashMap<String, String>() {{
-            this.put("gg","gg");
-            this.put("gg2","gg2");
-            this.put("gg3","gg3");
-        }});
-    }
-
 
     @PostMapping
     @Transactional(rollbackFor = Exception.class)

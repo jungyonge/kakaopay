@@ -31,8 +31,10 @@ public class ShareEventService {
         this.shareEventDetailRepository = shareEventDetailRepository;
     }
 
-    public String addShareEvent(int xUserId, int xRoomId, int totalShareMoney, int totalSharePeople) {
+    public Map<String, Object> addShareEvent(int xUserId, int xRoomId, int totalShareMoney, int totalSharePeople) {
         int hostTotalMoney = 0;
+        Map<String, Object> resultMap = new HashMap<>();
+
 
         // 3자리 토큰발행행
         String token = RandomTokenUtil.getRandomToken(3);
@@ -65,12 +67,14 @@ public class ShareEventService {
             shareEventDetail.setShareEvent(shareEvent);
             shareEventDetailRepository.save(shareEventDetail);
         }
-        return token;
+        resultMap.put("token",token);
+        return resultMap;
     }
 
 
-    public int attendShareEvent(int xUserId, int xRoomId, String token) throws ShareEventException {
+    public Map<String, Object> attendShareEvent(int xUserId, int xRoomId, String token) throws ShareEventException {
         int shareMoney = 0;
+        Map<String, Object> resultMap = new HashMap<>();
         Random random = new Random();
         random.setSeed(new Date().getTime());
         ShareEventDetail shareEventDetail;
@@ -109,7 +113,8 @@ public class ShareEventService {
         shareEventDetailRepository.save(shareEventDetail);
         userRepository.save(receiveUser);
 
-        return shareMoney;
+        resultMap.put("shareMoney",shareMoney);
+        return resultMap;
     }
 
     public ShareEventDto searchShareEvent (int xUserId, int xRoomId, String token) throws ShareEventException{

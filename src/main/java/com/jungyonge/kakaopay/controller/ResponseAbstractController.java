@@ -1,8 +1,6 @@
 package com.jungyonge.kakaopay.controller;
 
-import com.fasterxml.jackson.annotation.JsonView;
 import com.jungyonge.kakaopay.payload.ApiResponse;
-import com.jungyonge.kakaopay.payload.jsonHint.JsonHint;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 

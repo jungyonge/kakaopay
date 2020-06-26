@@ -1,11 +1,8 @@
 package com.jungyonge.kakaopay.model;
 
-import com.fasterxml.jackson.annotation.JsonView;
-import com.jungyonge.kakaopay.payload.jsonHint.JsonHint;
+
 import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.experimental.Tolerate;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
