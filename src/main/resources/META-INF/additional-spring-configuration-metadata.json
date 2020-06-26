@@ -1,0 +1,8 @@
+{
+  "properties": [
+    {
+      "name": "spring.jpa.hibernate.implicit-strategy",
+      "type": "java.lang.String",
+      "description": "Description for spring.jpa.hibernate.implicit-strategy."
+  }
+] }

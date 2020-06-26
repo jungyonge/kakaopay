@@ -6,26 +6,30 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Data
 @Entity
-public class ShareEventDetail implements Serializable {
+public class User implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY )
-    @Column(name = "share_detail_id")
+    @Column(name = "user_id")
     private long id;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "share_id")
-    private ShareEvent shareEvent;
+    private int money;
 
-    private int shareMoneyDetail;
+//    @ManyToMany
+//    @JoinTable(name = "user_room",
+//                joinColumns = @JoinColumn(name="user_id"),
+//                inverseJoinColumns = @JoinColumn(name = "room_id"))
+//    private List<Room> rooms = new ArrayList<Room>();
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "user_id")
-    private User user;
+    @OneToMany(mappedBy = "user" ,fetch = FetchType.EAGER)
+    private List<Room> rooms = new ArrayList<>();
+
 
     @CreationTimestamp
     @Column(updatable=false)
@@ -36,7 +40,8 @@ public class ShareEventDetail implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date udtDate;
 
-    public ShareEventDetail(){
+    public User(){
         super();
     }
+
 }
