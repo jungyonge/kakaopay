@@ -142,7 +142,6 @@ public class ShareEventService {
         }
 
         List<ShareEventDetail> shareEventDetails = shareEvent.getShareEventDetails();
-
         Iterator iter = shareEventDetails.iterator();
         while(iter.hasNext()) {
             ShareEventDetail shareEventDetail = (ShareEventDetail) iter.next();

@@ -2,6 +2,7 @@ package com.jungyonge.kakaopay.controller;
 
 import com.jungyonge.kakaopay.entity.Room;
 import com.jungyonge.kakaopay.entity.User;
+import com.jungyonge.kakaopay.exception.ShareEventException;
 import com.jungyonge.kakaopay.model.request.AddShareEventRequest;
 import com.jungyonge.kakaopay.model.request.AttendShareEventRequest;
 import com.jungyonge.kakaopay.repository.RoomRepository;
@@ -9,8 +10,10 @@ import com.jungyonge.kakaopay.repository.UserRepository;
 import com.jungyonge.kakaopay.service.ShareEventService;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +37,8 @@ public class ShareEventControllerTest {
 
     @Autowired
     private RoomRepository roomRepository;
+
+
 
     @Before
     public void initData(){
@@ -80,7 +85,7 @@ public class ShareEventControllerTest {
         assertEquals(expectToken.length(),testToken.length());
     }
 
-    @Test
+    @Test(expected = ShareEventException.class)
     @DisplayName("방 참여 여부 확인")
     public void joinRoomTest() {
         int xUserId = 1;
@@ -92,7 +97,7 @@ public class ShareEventControllerTest {
         assertEquals(expectToken.length(),testToken.length());
     }
 
-    @Test
+    @Test(expected = ShareEventException.class)
     @DisplayName("만든 이벤트 참여 불가능 확인")
     public void eventHostTest() {
         int xUserId = 1;
@@ -106,7 +111,7 @@ public class ShareEventControllerTest {
         int shareMoney = shareEventService.attendShareEvent(xUserId,xRoomId,attendShareEventRequest);
     }
 
-    @Test
+    @Test(expected = ShareEventException.class)
     @DisplayName("같은 대화방에 속해 있는지 확인")
     public void sameRoomTest() {
         int xUserId = 1;
@@ -122,7 +127,7 @@ public class ShareEventControllerTest {
         int shareMoney = shareEventService.attendShareEvent(xUserId,xRoomId,attendShareEventRequest);
     }
 
-    @Test
+    @Test(expected = ShareEventException.class)
     @DisplayName("이벤트 재참여 불가능 확인")
     public void duplicateAttendTest() {
         int xUserId = 1;

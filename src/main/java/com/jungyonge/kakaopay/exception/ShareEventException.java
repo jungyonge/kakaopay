@@ -28,6 +28,10 @@ public class ShareEventException extends RuntimeException{
         this.responseCode = responseCode.toString();
     }
 
+    public static ShareEventException none() {
+        return null;
+    }
+
     public enum ResponseCode {
 
         C0000("정상"),
