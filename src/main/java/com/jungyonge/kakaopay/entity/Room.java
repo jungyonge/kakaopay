@@ -17,7 +17,6 @@ public class Room {
     @Column(name = "room_id")
     private long id;
 
-    @NaturalId
     @Column(name = "room_num")
     private long num;
 

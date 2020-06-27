@@ -12,7 +12,16 @@ INSERT INTO room (room_id,room_num, user_id)
 VALUES (1, 1, 1);
 
 INSERT INTO room (room_id,room_num, user_id)
-VALUES (2, 2, 2);
+VALUES (2, 1, 2);
 
 INSERT INTO room (room_id,room_num, user_id)
-VALUES (3, 3, 3);
+VALUES (3, 1, 3);
+
+INSERT INTO room (room_id,room_num, user_id)
+VALUES (4, 2, 1);
+
+INSERT INTO room (room_id,room_num, user_id)
+VALUES (5, 2, 2);
+
+INSERT INTO room (room_id,room_num, user_id)
+VALUES (6, 3, 3);
