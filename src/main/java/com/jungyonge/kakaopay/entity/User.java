@@ -17,7 +17,7 @@ import java.util.List;
 @Setter
 @EqualsAndHashCode(callSuper = false, exclude = {"rooms"})
 @Entity
-public class User implements Serializable {
+public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY )

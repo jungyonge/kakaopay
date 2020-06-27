@@ -13,7 +13,7 @@ import java.util.List;
 
 @Data
 @Entity
-public class ShareEvent implements Serializable {
+public class ShareEvent  {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY )

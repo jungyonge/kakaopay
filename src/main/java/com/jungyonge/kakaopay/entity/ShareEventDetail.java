@@ -10,7 +10,7 @@ import java.util.Date;
 
 @Data
 @Entity
-public class ShareEventDetail implements Serializable {
+public class ShareEventDetail {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY )
