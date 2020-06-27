@@ -1,21 +1,18 @@
 package com.jungyonge.kakaopay.controller;
 
-import com.jungyonge.kakaopay.exception.ShareEventException;
 import com.jungyonge.kakaopay.model.request.AddShareEventRequest;
 import com.jungyonge.kakaopay.model.request.AttendShareEventRequest;
 import com.jungyonge.kakaopay.model.request.SearchShareEventRequest;
+import com.jungyonge.kakaopay.model.response.AddShareEventResponse;
+import com.jungyonge.kakaopay.model.response.AttendShareEventResponse;
+import com.jungyonge.kakaopay.model.response.SearchShareEventResponse;
 import com.jungyonge.kakaopay.service.ShareEventService;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.HashMap;
 
 
 @RestController
 @RequestMapping("/share-event")
-public class ShareEventController extends ResponseAbstractController {
+public class ShareEventController {
 
     private final ShareEventService shareEventService;
 
@@ -24,25 +21,25 @@ public class ShareEventController extends ResponseAbstractController {
     }
 
     @PostMapping
-    public ResponseEntity addShareEvent(@RequestHeader("X-USER-ID") int xUserId,
-                                        @RequestHeader("X-ROOM-ID") int xRoomId,
-                                        @RequestBody AddShareEventRequest request) {
-        return makeResponse(shareEventService.addShareEvent(xUserId, xRoomId, request));
+    public AddShareEventResponse addShareEvent(@RequestHeader("X-USER-ID") int xUserId,
+                                               @RequestHeader("X-ROOM-ID") int xRoomId,
+                                               @RequestBody AddShareEventRequest request) {
+        return shareEventService.addShareEvent(xUserId, xRoomId, request);
     }
 
     @PutMapping
-    public ResponseEntity attendShareEvent(@RequestHeader("X-USER-ID") int xUserId,
-                                           @RequestHeader("X-ROOM-ID") int xRoomId,
-                                           @RequestBody AttendShareEventRequest request) {
-        return makeResponse(shareEventService.attendShareEvent(xUserId, xRoomId, request));
+    public AttendShareEventResponse attendShareEvent(@RequestHeader("X-USER-ID") int xUserId,
+                                                     @RequestHeader("X-ROOM-ID") int xRoomId,
+                                                     @RequestBody AttendShareEventRequest request) {
+        return shareEventService.attendShareEvent(xUserId, xRoomId, request);
 
     }
 
     @GetMapping
-    public ResponseEntity searchShareEvent(@RequestHeader("X-USER-ID") int xUserId,
-                                           @RequestHeader("X-ROOM-ID") int xRoomId,
-                                           @RequestBody SearchShareEventRequest request) {
-        return makeResponse(shareEventService.searchShareEvent(xUserId, xRoomId, request));
+    public SearchShareEventResponse searchShareEvent(@RequestHeader("X-USER-ID") int xUserId,
+                                                     @RequestHeader("X-ROOM-ID") int xRoomId,
+                                                     @RequestBody SearchShareEventRequest request) {
+        return shareEventService.searchShareEvent(xUserId, xRoomId, request);
 
     }
 

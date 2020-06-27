@@ -1,14 +1,12 @@
 package com.jungyonge.kakaopay.model;
 
 import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
+
 import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+
 
 @Data
 @Entity

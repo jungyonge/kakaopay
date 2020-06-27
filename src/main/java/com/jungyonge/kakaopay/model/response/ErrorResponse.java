@@ -2,8 +2,6 @@ package com.jungyonge.kakaopay.model.response;
 
 import lombok.*;
 
-import java.util.List;
-
 @Data
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)

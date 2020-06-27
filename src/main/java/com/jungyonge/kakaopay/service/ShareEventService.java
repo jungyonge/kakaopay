@@ -178,7 +178,7 @@ public class ShareEventService {
             ShareEventDetail shareEventDetail = new ShareEventDetail();
             int randomMoney = 0;
             if (i != totalSharePeople - 1) {
-                randomMoney = random.nextInt(max - totalSharePeople - 1) + min;
+                randomMoney = random.nextInt(max - (totalSharePeople - 1)) + min;
             } else {
                 randomMoney = max;
             }

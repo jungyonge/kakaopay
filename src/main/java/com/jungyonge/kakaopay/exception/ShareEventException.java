@@ -23,7 +23,6 @@ public class ShareEventException extends RuntimeException{
     }
 
     public ShareEventException(ResponseCode responseCode) {
-        //super(MessageSourceUtil.getMessage(errorCode.toString()));
         super(responseCode.getValue());
         this.responseMsg = responseCode.getValue();
         this.responseCode = responseCode.toString();
