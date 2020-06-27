@@ -2,6 +2,12 @@ package com.jungyonge.kakaopay.service;
 
 import com.jungyonge.kakaopay.exception.ShareEventException;
 import com.jungyonge.kakaopay.model.*;
+import com.jungyonge.kakaopay.model.request.AddShareEventRequest;
+import com.jungyonge.kakaopay.model.request.AttendShareEventRequest;
+import com.jungyonge.kakaopay.model.request.SearchShareEventRequest;
+import com.jungyonge.kakaopay.model.response.AddShareEventResponse;
+import com.jungyonge.kakaopay.model.response.AttendShareEventResponse;
+import com.jungyonge.kakaopay.model.response.SearchShareEventResponse;
 import com.jungyonge.kakaopay.repository.RoomRepository;
 import com.jungyonge.kakaopay.repository.ShareEventDetailRepository;
 import com.jungyonge.kakaopay.repository.ShareEventRepository;
@@ -32,11 +38,10 @@ public class ShareEventService {
         this.shareEventDetailRepository = shareEventDetailRepository;
     }
 
-    @Transactional(rollbackFor = Exception.class)
-    public Map<String, Object> addShareEvent(int xUserId, int xRoomId, int totalShareMoney, int totalSharePeople) {
+    @Transactional
+    public AddShareEventResponse addShareEvent(int xUserId, int xRoomId, AddShareEventRequest request) {
         int hostTotalMoney = 0;
-        Map<String, Object> resultMap = new HashMap<>();
-
+        AddShareEventResponse addShareEventResponse = new AddShareEventResponse();
 
         // 3자리 토큰발행행
         String token = RandomTokenUtil.getRandomToken(3);
@@ -47,19 +52,19 @@ public class ShareEventService {
             log.error(ShareEventException.ResponseCode.E0007.getValue());
             throw new ShareEventException(ShareEventException.ResponseCode.E0007);
         }
-        hostTotalMoney = hostUser.getMoney() - totalShareMoney;
+        hostTotalMoney = hostUser.getMoney() - request.getTotalShareMoney();
         hostUser.setMoney(hostTotalMoney);
         userRepository.save(hostUser);
 
         // 돈나누기
-        List<ShareEventDetail> shareEventDetails = divideMoney(totalShareMoney, totalSharePeople);
+        List<ShareEventDetail> shareEventDetails = divideMoney( request.getTotalShareMoney(), request.getTotalSharePeople());
 
         ShareEvent shareEvent = ShareEvent.builder()
                 .user(hostUser)
                 .token(token)
                 .room(room)
-                .totalShareMoney(totalShareMoney)
-                .totalSharePeople(totalSharePeople)
+                .totalShareMoney(request.getTotalShareMoney())
+                .totalSharePeople( request.getTotalShareMoney())
                 .expired(false)
                 .build();
 
@@ -69,14 +74,14 @@ public class ShareEventService {
             shareEventDetail.setShareEvent(shareEvent);
             shareEventDetailRepository.save(shareEventDetail);
         }
-        resultMap.put("token",token);
-        return resultMap;
+        addShareEventResponse.setToken(token);
+        return addShareEventResponse;
     }
 
-    @Transactional(rollbackFor = Exception.class)
-    public Map<String, Object> attendShareEvent(int xUserId, int xRoomId, String token) throws ShareEventException {
+    @Transactional
+    public AttendShareEventResponse attendShareEvent(int xUserId, int xRoomId, AttendShareEventRequest request) throws ShareEventException {
         int shareMoney = 0;
-        Map<String, Object> resultMap = new HashMap<>();
+        AttendShareEventResponse attendShareEventResponse = new AttendShareEventResponse();
         Random random = new Random();
         random.setSeed(new Date().getTime());
         ShareEventDetail shareEventDetail;
@@ -87,7 +92,7 @@ public class ShareEventService {
         User receiveUser = userRepository.findById(xUserId);
 
         for(Room tempRoom: rooms){
-            shareEvent = shareEventRepository.findByRoomAndToken(tempRoom,token);
+            shareEvent = shareEventRepository.findByRoomAndToken(tempRoom,request.getToken());
             if(shareEvent != null){
                 break;
             }
@@ -115,19 +120,20 @@ public class ShareEventService {
         shareEventDetailRepository.save(shareEventDetail);
         userRepository.save(receiveUser);
 
-        resultMap.put("shareMoney",shareMoney);
-        return resultMap;
+        attendShareEventResponse.setShareMoney(shareMoney);
+        return attendShareEventResponse;
     }
 
-    @Transactional(rollbackFor = Exception.class)
-    public ShareEventDto searchShareEvent (int xUserId, int xRoomId, String token) throws ShareEventException{
+    @Transactional
+    public SearchShareEventResponse searchShareEvent (int xUserId, int xRoomId, SearchShareEventRequest request) throws ShareEventException{
 
         List<ShareEventDetailDto> shareEventDetailDtos = new ArrayList<>();
+        SearchShareEventResponse searchShareEventResponse = new SearchShareEventResponse();
         int completeShareMoney = 0 ;
 
         User hostUser = userRepository.findById(xUserId);
         Room room = roomRepository.findById(xRoomId);
-        ShareEvent shareEvent = shareEventRepository.findByRoomAndTokenAndUser(room,token,hostUser);
+        ShareEvent shareEvent = shareEventRepository.findByRoomAndTokenAndUser(room,request.getToken(),hostUser);
 
         if(shareEvent == null){
             log.error(ShareEventException.ResponseCode.E0009.getValue());
@@ -156,8 +162,8 @@ public class ShareEventService {
                 shareEventDetailDtos.add(shareEventDetailDto);
             }
         }
-
-        return new ShareEventDto(shareEvent.getRegDate(),shareEvent.getTotalShareMoney(),completeShareMoney,shareEventDetailDtos);
+        searchShareEventResponse.setShareEventDto(new ShareEventDto(shareEvent.getRegDate(),shareEvent.getTotalShareMoney(),completeShareMoney,shareEventDetailDtos));
+        return searchShareEventResponse;
     }
     private List<ShareEventDetail> divideMoney(int totalShareMoney, int totalSharePeople) {
 

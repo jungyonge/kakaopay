@@ -1,6 +1,9 @@
 package com.jungyonge.kakaopay.controller;
 
 import com.jungyonge.kakaopay.exception.ShareEventException;
+import com.jungyonge.kakaopay.model.request.AddShareEventRequest;
+import com.jungyonge.kakaopay.model.request.AttendShareEventRequest;
+import com.jungyonge.kakaopay.model.request.SearchShareEventRequest;
 import com.jungyonge.kakaopay.service.ShareEventService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,43 +24,26 @@ public class ShareEventController extends ResponseAbstractController {
     }
 
     @PostMapping
-    @Transactional(rollbackFor = Exception.class)
     public ResponseEntity addShareEvent(@RequestHeader("X-USER-ID") int xUserId,
                                         @RequestHeader("X-ROOM-ID") int xRoomId,
-                                        @RequestParam(value = "totalShareMoney") int totalShareMoney,
-                                        @RequestParam(value = "totalSharePeople") int totalSharePeople)
-    {
-        try {
-            return makeResponse(shareEventService.addShareEvent(xUserId, xRoomId, totalShareMoney,totalSharePeople ));
-        } catch (ShareEventException e) {
-            return makeResponse(HttpStatus.BAD_REQUEST,e.getResponseMsg(),e.getResponseCode());
-        }
-
+                                        @RequestBody AddShareEventRequest request) {
+        return makeResponse(shareEventService.addShareEvent(xUserId, xRoomId, request));
     }
 
     @PutMapping
-    @Transactional(rollbackFor = Exception.class)
     public ResponseEntity attendShareEvent(@RequestHeader("X-USER-ID") int xUserId,
                                            @RequestHeader("X-ROOM-ID") int xRoomId,
-                                           @RequestParam(value = "token") String token)
-    {
-        try {
-            return makeResponse(shareEventService.attendShareEvent(xUserId, xRoomId, token));
-        } catch (ShareEventException e) {
-            return makeResponse(HttpStatus.BAD_REQUEST,e.getResponseMsg(),e.getResponseMsg());
-        }
+                                           @RequestBody AttendShareEventRequest request) {
+        return makeResponse(shareEventService.attendShareEvent(xUserId, xRoomId, request));
+
     }
 
-    @GetMapping("/search")
+    @GetMapping
     public ResponseEntity searchShareEvent(@RequestHeader("X-USER-ID") int xUserId,
                                            @RequestHeader("X-ROOM-ID") int xRoomId,
-                                           @RequestParam(value = "token") String token)
-    {
-        try {
-            return makeResponse(shareEventService.searchShareEvent(xUserId, xRoomId, token));
-        } catch (ShareEventException e) {
-            return makeResponse(HttpStatus.BAD_REQUEST,e.getResponseMsg(),e.getResponseMsg());
-        }
+                                           @RequestBody SearchShareEventRequest request) {
+        return makeResponse(shareEventService.searchShareEvent(xUserId, xRoomId, request));
+
     }
 
 }

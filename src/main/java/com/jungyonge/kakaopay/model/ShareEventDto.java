@@ -16,9 +16,4 @@ public class ShareEventDto {
     private int completeShareMoney;
     private List<ShareEventDetailDto> shareEventDetails;
 
-    //    public ShareEventDetail toEntity(){
-//        return new ShareEventDetail(regDate,totalShareMoney,completeShareMoney,shareEventDetails);
-//    }
-
-
 }

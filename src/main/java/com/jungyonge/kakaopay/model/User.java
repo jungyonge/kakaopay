@@ -27,12 +27,6 @@ public class User implements Serializable {
 
     private int money;
 
-//    @ManyToMany
-//    @JoinTable(name = "user_room",
-//                joinColumns = @JoinColumn(name="user_id"),
-//                inverseJoinColumns = @JoinColumn(name = "room_id"))
-//    private List<Room> rooms = new ArrayList<Room>();
-
     @OneToMany(mappedBy = "user" ,fetch = FetchType.EAGER)
     private List<Room> rooms = new ArrayList<>();
 

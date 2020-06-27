@@ -23,9 +23,6 @@ public class Room implements Serializable {
     @Column(name = "room_num")
     private long num;
 
-//    @ManyToMany(mappedBy = "rooms")
-//    private List<User> members = new ArrayList<User>();
-
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private User user;
