@@ -1,7 +1,7 @@
 package com.jungyonge.kakaopay.repository;
 
-import com.jungyonge.kakaopay.model.ShareEventDetail;
-import com.jungyonge.kakaopay.model.User;
+import com.jungyonge.kakaopay.entity.ShareEventDetail;
+import com.jungyonge.kakaopay.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

@@ -24,14 +24,14 @@ public class ShareEventController {
     public AddShareEventResponse addShareEvent(@RequestHeader("X-USER-ID") int xUserId,
                                                @RequestHeader("X-ROOM-ID") int xRoomId,
                                                @RequestBody AddShareEventRequest request) {
-        return shareEventService.addShareEvent(xUserId, xRoomId, request);
+        return AddShareEventResponse.of(shareEventService.addShareEvent(xUserId, xRoomId, request));
     }
 
     @PutMapping
     public AttendShareEventResponse attendShareEvent(@RequestHeader("X-USER-ID") int xUserId,
                                                      @RequestHeader("X-ROOM-ID") int xRoomId,
                                                      @RequestBody AttendShareEventRequest request) {
-        return shareEventService.attendShareEvent(xUserId, xRoomId, request);
+        return AttendShareEventResponse.of(shareEventService.attendShareEvent(xUserId, xRoomId, request));
 
     }
 
@@ -39,7 +39,7 @@ public class ShareEventController {
     public SearchShareEventResponse searchShareEvent(@RequestHeader("X-USER-ID") int xUserId,
                                                      @RequestHeader("X-ROOM-ID") int xRoomId,
                                                      @RequestBody SearchShareEventRequest request) {
-        return shareEventService.searchShareEvent(xUserId, xRoomId, request);
+        return SearchShareEventResponse.of(shareEventService.searchShareEvent(xUserId, xRoomId, request));
 
     }
 

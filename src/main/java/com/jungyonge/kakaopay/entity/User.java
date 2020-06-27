@@ -1,5 +1,6 @@
-package com.jungyonge.kakaopay.model;
+package com.jungyonge.kakaopay.entity;
 
+import com.jungyonge.kakaopay.entity.Room;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;

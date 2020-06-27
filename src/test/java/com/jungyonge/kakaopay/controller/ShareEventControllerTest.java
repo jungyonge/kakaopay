@@ -1,18 +1,15 @@
 package com.jungyonge.kakaopay.controller;
 
-import com.jungyonge.kakaopay.model.Room;
-import com.jungyonge.kakaopay.model.User;
+import com.jungyonge.kakaopay.entity.Room;
+import com.jungyonge.kakaopay.entity.User;
 import com.jungyonge.kakaopay.repository.RoomRepository;
 import com.jungyonge.kakaopay.repository.UserRepository;
 import com.jungyonge.kakaopay.service.ShareEventService;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 
 
@@ -63,6 +60,7 @@ class ShareEventControllerTest {
 //        int totalShareMoney = 100;
 //        int totalSharePeople = 3;
 //
+//
 //        ResponseEntity responseEntity = shareEventController.addShareEvent(xUserId,xRoomId,totalShareMoney,totalSharePeople);
 //
 //        log.info(responseEntity.toString());
@@ -86,4 +84,5 @@ class ShareEventControllerTest {
 //        ResponseEntity responseEntity = shareEventController.searchShareEvent(xUserId,xRoomId,token);
 //        log.info(responseEntity.toString());
 //    }
+
 }

@@ -1,4 +1,4 @@
-package com.jungyonge.kakaopay.model;
+package com.jungyonge.kakaopay.entity;
 
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
