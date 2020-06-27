@@ -1,23 +1,24 @@
 
 server:
-  port: 8081
+  port: 8080
 
 spring:
   mvc:
     throw-exception-if-no-handler-found: true
   jpa:
     hibernate:
-      ddl-auto: update
-    database: mysql
-    show-sql: true
+      ddl-auto: create-drop
+    database: h2
     properties:
       hibernate:
-        default_schema: kakaopay
+        show_sql: true
+        format_sql: true
   datasource:
-    url: jdbc:mysql://localhost:3306/kakaopay?serverTimezone=UTC&autoReconnection=true
-    username: root
-    password: ghzkrp153
-    driver-class-name: com.mysql.cj.jdbc.Driver
+    data: classpath:data-h2.sql
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:testdb;
+    username: sa
+    password:
   jackson:
     mapper:
       DEFAULT_VIEW_INCLUSION: false

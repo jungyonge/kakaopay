@@ -9,6 +9,7 @@ import com.jungyonge.kakaopay.repository.UserRepository;
 import com.jungyonge.kakaopay.util.RandomTokenUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
@@ -31,6 +32,7 @@ public class ShareEventService {
         this.shareEventDetailRepository = shareEventDetailRepository;
     }
 
+    @Transactional(rollbackFor = Exception.class)
     public Map<String, Object> addShareEvent(int xUserId, int xRoomId, int totalShareMoney, int totalSharePeople) {
         int hostTotalMoney = 0;
         Map<String, Object> resultMap = new HashMap<>();
@@ -71,7 +73,7 @@ public class ShareEventService {
         return resultMap;
     }
 
-
+    @Transactional(rollbackFor = Exception.class)
     public Map<String, Object> attendShareEvent(int xUserId, int xRoomId, String token) throws ShareEventException {
         int shareMoney = 0;
         Map<String, Object> resultMap = new HashMap<>();
@@ -117,6 +119,7 @@ public class ShareEventService {
         return resultMap;
     }
 
+    @Transactional(rollbackFor = Exception.class)
     public ShareEventDto searchShareEvent (int xUserId, int xRoomId, String token) throws ShareEventException{
 
         List<ShareEventDetailDto> shareEventDetailDtos = new ArrayList<>();
