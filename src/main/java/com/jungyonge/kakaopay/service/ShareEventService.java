@@ -165,6 +165,7 @@ public class ShareEventService {
         searchShareEventResponse.setShareEventDto(new ShareEventDto(shareEvent.getRegDate(),shareEvent.getTotalShareMoney(),completeShareMoney,shareEventDetailDtos));
         return searchShareEventResponse;
     }
+
     private List<ShareEventDetail> divideMoney(int totalShareMoney, int totalSharePeople) {
 
         List<ShareEventDetail> shareEventDetails = new ArrayList<>();
