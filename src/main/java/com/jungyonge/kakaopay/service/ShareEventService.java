@@ -49,7 +49,6 @@ public class ShareEventService {
         User hostUser = userRepository.findById(xUserId);
         Room room = roomRepository.findByIdAndUser(xRoomId, hostUser);
         if(room == null){
-            log.error(ShareEventException.ResponseCode.E0007.getValue());
             throw new ShareEventException(ShareEventException.ResponseCode.E0007);
         }
         hostTotalMoney = hostUser.getMoney() - request.getTotalShareMoney();
@@ -131,7 +130,6 @@ public class ShareEventService {
         ShareEvent shareEvent = shareEventRepository.findByRoomAndTokenAndUser(room,request.getToken(),hostUser);
 
         if(shareEvent == null){
-            log.error(ShareEventException.ResponseCode.E0009.getValue());
             throw new ShareEventException(ShareEventException.ResponseCode.E0009);
         }
 
@@ -140,7 +138,6 @@ public class ShareEventService {
         long diffTime = (currentTime - regTime) /  (24 * 60 * 60 * 1000);
 
         if(diffTime > 7){
-            log.error(ShareEventException.ResponseCode.E0008.getValue());
             throw new ShareEventException(ShareEventException.ResponseCode.E0008);
         }
 
@@ -191,17 +188,14 @@ public class ShareEventService {
         long checkAttend = 0;
 
         if(room == null){
-            log.error(ShareEventException.ResponseCode.E0006.getValue());
             throw new ShareEventException(ShareEventException.ResponseCode.E0006);
         }
 
         if(shareEvent == null){
-            log.error(ShareEventException.ResponseCode.E0004.getValue());
             throw new ShareEventException(ShareEventException.ResponseCode.E0004);
         }
 
         if(user == null){
-            log.error(ShareEventException.ResponseCode.E0005.getValue());
             throw new ShareEventException(ShareEventException.ResponseCode.E0005);
         }
 
@@ -210,18 +204,15 @@ public class ShareEventService {
 
         long diffTime = (currentTime - regTime) /  1000;
         if (shareEvent.isExpired() || diffTime > 600) {
-            log.error(ShareEventException.ResponseCode.E0003.getValue());
             throw new ShareEventException(ShareEventException.ResponseCode.E0003);
         }
         if (user.getId() == shareEvent.getUser().getId()) {
-            log.error(ShareEventException.ResponseCode.E0002.getValue());
             throw new ShareEventException(ShareEventException.ResponseCode.E0002);
         }
 
         checkAttend = shareEventDetailRepository.countByShareEventIdAndUserIs(shareEvent.getId(), user);
 
         if (checkAttend > 0) {
-            log.error(ShareEventException.ResponseCode.E0001.getValue());
             throw new ShareEventException(ShareEventException.ResponseCode.E0001);
         }
     }
